@@ -1,5 +1,5 @@
 # Santal
-Volatility Analysis Based on Social Media
+### Volatility Analysis Based on Social Media
 
 [Demo](https://github.com/TigaJi/Santal/blob/main/Demo.ipynb)
 
