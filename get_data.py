@@ -56,10 +56,12 @@ def search_and_upload(keyword,date,tweepy_client,s3_client,max_page = 100):
     
     #100 page * 100 result
     next_token = None
-    
+    start_time = datetime.datetime.combine(date,datetime.time.min)
+    end_time = datetime.datetime.combine(date,datetime.time.max)
     while pages < max_page:
         print('Requesting page#',pages+1,'...')
-        response = tweepy_client.search_recent_tweets(query=query,start_time = date,
+        response = tweepy_client.search_recent_tweets(query=query,start_time = start_time,
+                                 end_time = end_time,                                
                                  next_token = next_token,
                                  tweet_fields = tweet_fields,
                                  place_fields = place_fields,
@@ -69,6 +71,7 @@ def search_and_upload(keyword,date,tweepy_client,s3_client,max_page = 100):
         
         tweets+=response['data']
         users+=response['includes']['users']
+        
         try:
             places+=response['includes']['places']
         except:
