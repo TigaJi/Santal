@@ -15,4 +15,7 @@ Santal is a data analytical pipeline built on top of Tweepy, AWS S3, Redshift an
 5. Analytical queries and aggregate the data and perform analysis.
 
 
+### Demo
+[ChatGPT Analysis](notebooks/Analytics.ipynb)
+
 
