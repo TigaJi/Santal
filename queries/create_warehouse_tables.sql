@@ -3,7 +3,7 @@ CREATE TABLE "fact_tweets" (
     "tweet_id" BIGINT PRIMARY KEY,
   	"possibly_sensitive" BOOLEAN,
     "dt" TIMESTAMP DISTKEY,
-  	"geo_id" VARCHAR,
+  	"place_id" VARCHAR,
     "user_id" VARCHAR,
     "is_edited" BOOLEAN,
     "text" VARCHAR(10000),

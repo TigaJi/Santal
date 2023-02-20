@@ -1,5 +1,6 @@
 from get_data import search_and_upload
 from staging_data import stage_all_tables
+from data_checks import check_json_inplace,check_etl_result
 from queries.etl_queries import *
 from etl import perform_etl
 import tweepy
@@ -25,6 +26,13 @@ def populate_dwh(keyword,date,max_page):
     #get_tweets and upload
     search_and_upload(keyword,date,tweepy_client=tweepy_client,s3_client=s3_client,max_page=max_page)
     
+    #check for upload result
+    try:
+        check_json_inplace(keyword,date,s3_client=s3_client)
+    except ValueError:
+        return
+
+
     #redshift config
     redshift = {'DWH_DB_USER':os.environ['DWH_DB_USER'],
         'DWH_DB_PASSWORD':os.environ['DWH_DB_PASSWORD'],
@@ -38,3 +46,9 @@ def populate_dwh(keyword,date,max_page):
 
     #ETL to datawarehouse
     perform_etl(redshift)
+
+    #check ETL result
+    try:
+        check_etl_result(keyword,date,redshift)
+    except ValueError:
+        return

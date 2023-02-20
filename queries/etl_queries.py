@@ -33,7 +33,7 @@ SELECT incoming_tweets.* FROM
 (SELECT CAST (id AS BIGINT) AS tweet_id,
 	CAST (possibly_sensitive AS BOOLEAN) AS possibly_sensitive,
     TO_TIMESTAMP(created_at,'YYYY-MM-DD HH24:MI:SS') AS dt,
-    json_extract_path_text(geo,'place_id') AS geo_id,
+    json_extract_path_text(geo,'place_id') AS place_id,
     CAST(author_id AS BIGINT) AS user_id,
     CASE WHEN len(json_extract_array_element_text(edit_history_tweet_ids,1)) > 0 THEN TRUE ELSE FALSE END AS is_edited,
     text,
