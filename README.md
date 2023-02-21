@@ -17,10 +17,72 @@ Santal is a data analytical pipeline built on top of Tweepy, AWS S3, Redshift an
 
 </br>
 
-## Database Schema
+## Choice of Technology
+Please list out all the tools/technologies you use in this project and the rationale behind these choices
+
+- Python
+
+Project is implemented in Python since it has great intergration with all other platforms.
+
+- Tweepy API for Data Acqusition
+
+Compare with a web scraping program, the official API provides a more stable connection and more information, e.g user_verfication. Thus we applied for the elevated access and use the Auth2.0 Tweepy API as data source.
+
+- Data Lake Using AWS S3
+
+Data are stored in S3 due to its flexbility and consistency. More importantly, since the data is collected upon request (given keyword and date), we can better manage our data using the S3's keys and file paths. All data are organized as data_type/keyword/date. 
+
+- Data Warehouse in AWS RedShift
+
+A simple star schema DWH is implemented using Redshift because it has great compatability with S3 (our datalake). By using COPY commands and staging tables, we can perform the ETL easily and efficiently. The Downside of Redshift is that some constraints are not enforced,e.g. Primary Key. With carefully designed ETL quries,luckily, this issue can be handled. 
+
+
+</br>
+
+## Database Schema & Dictionary
 ![Alt text](ERD.jpg "Optional title")
 
-In this simpl star-schema data warehouse we have one fact table and two dimension tables, along with one mapping table. A few highlights:
+### fact_tweet
+| Column | Meaning |
+| ------ | ------ |
+| tweet_id | Unique identifier for each tweet, PK  |
+| possibily_sensitive | Whether or not the content contains possibile sensitive information |
+| dt | timestamp when the tweet was created |
+| place_id | FK connects to places dimension table |
+| user_id | FK connects to users dimension table |
+| is_edited | Whether or not the tweet has been edited |
+| text | Actual content of the tweet |
+|retweet_cnt | Number of retweets |
+| like_cnt | Number of likes |
+| quote_cnt | Number of quotes |
+| impression_cnt | Number of impressions |
+
+
+### dim_places
+| Column | Meaning |
+| ------ | ------ |
+| place_id | Unique identifier for each place,PK  |
+| country | country of this place |
+| full_name | details of this place, include all levels of geo information |
+| place_type | the most detailed level of this geo info, e.g. city/state/country |
+
+### dim_users
+| Column | Meaning |
+| ------ | ------ |
+| user_id | Unique identifier for each user,PK  |
+| user_location | location registered on user profile |
+| username | registered user name |
+| verified | Whether or not the account is verified |
+| verified_type | Type of verification, NA if verified is False |
+| user_description | User written self description |
+
+### mapping_table
+| Column | Meaning |
+| ------ | ------ |
+| tweet_id | Unique identifier for each tweet  |
+| keyword_date | a look-up key, formatted as keyword+'_'+date in 'YYYY-MM-DD'|
+
+In this simple star-schema data warehouse we have one fact table and two dimension tables, along with one mapping table. A few highlights:
 - Although Redshift doesn't automatically enforce the PK uniqueness constraints, our ETL queries made sure that no duplicate records are being inserted.
 - The choice of DISTKEY makes sure optimize the envisioned analytics and queries. 
 - The existence of mapping table signficantly reduced the query runtime, here is an detailed explanation.
