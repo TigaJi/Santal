@@ -18,23 +18,23 @@ Santal is a data analytical pipeline built on top of Tweepy, AWS S3, Redshift an
 </br>
 
 ## Choice of Technology
-Please list out all the tools/technologies you use in this project and the rationale behind these choices
+
 
 - Python
 
-Project is implemented in Python since it has great intergration with all other platforms.
+    Project is implemented in Python since it has great intergration with all other platforms.
 
 - Tweepy API for Data Acqusition
 
-Compare with a web scraping program, the official API provides a more stable connection and more information, e.g user_verfication. Thus we applied for the elevated access and use the Auth2.0 Tweepy API as data source.
+    Compare with a web scraping program, the official API provides a more stable connection and more information, e.g user_verfication. Thus we applied for the elevated access and use the Auth2.0 Tweepy API as data source.
 
 - Data Lake Using AWS S3
 
-Data are stored in S3 due to its flexbility and consistency. More importantly, since the data is collected upon request (given keyword and date), we can better manage our data using the S3's keys and file paths. All data are organized as data_type/keyword/date. 
+    Data are stored in S3 due to its flexbility and consistency. More importantly, since the data is collected upon request (given keyword and date), we can better manage our data using the S3's keys and file paths. All data are organized as data_type/keyword/date. 
 
 - Data Warehouse in AWS RedShift
 
-A simple star schema DWH is implemented using Redshift because it has great compatability with S3 (our datalake). By using COPY commands and staging tables, we can perform the ETL easily and efficiently. The Downside of Redshift is that some constraints are not enforced,e.g. Primary Key. With carefully designed ETL quries,luckily, this issue can be handled. 
+    A simple star schema DWH is implemented using Redshift because it has great compatability with S3 (our datalake). By using COPY commands and staging tables, we can perform the ETL easily and efficiently. The Downside of Redshift is that some constraints are not enforced,e.g. Primary Key. With carefully designed ETL quries,luckily, this issue can be handled. 
 
 
 </br>
